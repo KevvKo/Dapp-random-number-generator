@@ -1,17 +1,12 @@
-pragma solidity >=0.4.16 <0.9.0;
+pragma solidity ^0.5.0;
 
-import "github.com/provable-things/ethereum-api/provableAPI_0.5.sol";
+contract RandomNumberGenerator {
 
-contract RandomNumberGenerator is usingProvable {
+    uint256 randomNumber;
 
-    event LogNewContract(string message);
-    event generatedRandomNumber(uint256 number);
+    constructor() public {}
 
-    constructor(){
-        generatedRandomNumber();
-    }
-
-    function randomNumber() public {
-
+    function badRandomNumber() public returns (uint8) {
+        return uint8(uint256(keccak256(abi.encodePacked( block.timestamp))));
     }
 }
