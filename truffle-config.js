@@ -1,6 +1,6 @@
+require('dotenv').config();
 const HDWalletProvider = require("@truffle/hdwallet-provider");
-const {API_URL} = process.env
-const {PRIVATE_KEY} = process.env
+const { API_URL, PRIVATE_KEY } = process.env;
 
 module.exports = {
   compilers: {
@@ -17,15 +17,10 @@ module.exports = {
     },
     kovan: {
       provider: function() {
-        return new HDWalletProvider(
-          //private keys array
-          [PRIVATE_KEY],
-          API_URL
-        )
+        return new HDWalletProvider([PRIVATE_KEY], API_URL)
       },
-      gas: 5000000,
-      gasPrice: 25000000000,
-      network_id: 42
-    }
+      network_id: 42,
+      gas: 4000000 //4M is the max
+    },
   }
-};
+}

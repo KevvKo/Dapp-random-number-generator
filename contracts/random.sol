@@ -1,5 +1,7 @@
+// SPDX-License-Identifier: GPL-3.0
+
 pragma solidity ^0.6.6;
-import "githubusercontent.com/smartcontractkit/chainlink/master/evm-contracts/src/v0.6/VRFConsumerBase.sol";
+import "@chainlink/contracts/src/v0.6/VRFConsumerBase.sol";
 
 contract RandomNumberGenerator is VRFConsumerBase{
     
@@ -30,7 +32,7 @@ contract RandomNumberGenerator is VRFConsumerBase{
     }
     
     // returns a "random" number based on an unsecure pattern
-    function getBadRandomNumber() public returns (uint8) {
+    function getBadRandomNumber() public view  returns (uint8) {
         return uint8(uint256(keccak256(abi.encodePacked( block.timestamp, block.difficulty))));
     }
 
