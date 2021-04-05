@@ -7,9 +7,7 @@ contract Random is VRFConsumerBase{
     
     bytes32 internal keyHash;
     uint256 internal fee;
-    uint256 randomNumber;
-
-    event LogInstanciated(string message);
+    uint256 public randomResult;
 
     constructor()
     
@@ -20,28 +18,27 @@ contract Random is VRFConsumerBase{
     
     public
     {
-        emit LogInstanciated('Contract is instantiated!');
         keyHash = 0x6c3699283bda56ad74f6b855546325b68d482e983852a7a82979cc4807b641f4; 
         fee = 0.1 * 10 ** 18;
     }
 
-    function getRandomNumberBySeed(uint256 userProvidedSeed) public returns (bytes32 requestId){
-        require(LINK.balanceOf(address(this)) > fee, 'Transaction canceled - not enough LINK');        
+    function fulfillRandomness(bytes32 requestId, uint256 randomness) internal override {
+        randomResult = randomness;
+    }
+    
+    // returns a random number based on an oracle
+    function getRandomNumber(uint256 userProvidedSeed) public returns (bytes32 requestId){
+        require(LINK.balanceOf(address(this)) > fee, 'Transaction canceled - not enough LINK');      
         return requestRandomness(keyHash, fee, userProvidedSeed);
     }
 
-    function fulfillRandomness(bytes32 requestId, uint256 randomness) internal override {
-        randomNumber = randomness;
-    }
-    
     // returns a "random" number based on an unsecure pattern
-    function getBadRandomNumber() public view  returns (uint8) {
-        return uint8(uint256(keccak256(abi.encodePacked( block.timestamp, block.difficulty))));
+    function getRandomNumberWithoutOracle() public view  returns (uint256) {
+        return uint256(keccak256(abi.encodePacked( now, msg.sender)));
     }
 
-    function getRandomNumber() public returns (bytes32 request) {
-        require(LINK.balanceOf(address(this)) > fee, 'Transaction canceled - not enough LINK');        
-        uint256 badRandomNumber = uint256(this.getBadRandomNumber());
-        return requestRandomness(keyHash, fee, badRandomNumber);
+    function randomNumber() public view returns(uint256) {
+        return randomResult;
     }
+
 }
