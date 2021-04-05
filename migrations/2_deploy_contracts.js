@@ -1,4 +1,4 @@
-const Random = artifacts.require('RandomNumberGenerator')
+const Random = artifacts.require('Random')
 
 module.exports = function(deployer) {
     deployer.deploy(Random)

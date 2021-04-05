@@ -3,11 +3,13 @@
 pragma solidity ^0.6.6;
 import "@chainlink/contracts/src/v0.6/VRFConsumerBase.sol";
 
-contract RandomNumberGenerator is VRFConsumerBase{
+contract Random is VRFConsumerBase{
     
     bytes32 internal keyHash;
     uint256 internal fee;
     uint256 randomNumber;
+
+    event LogInstanciated(string message);
 
     constructor()
     
@@ -18,6 +20,7 @@ contract RandomNumberGenerator is VRFConsumerBase{
     
     public
     {
+        emit LogInstanciated('Contract is instantiated!');
         keyHash = 0x6c3699283bda56ad74f6b855546325b68d482e983852a7a82979cc4807b641f4; 
         fee = 0.1 * 10 ** 18;
     }
