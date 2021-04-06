@@ -7,7 +7,7 @@ contract Random is VRFConsumerBase{
     
     bytes32 internal keyHash;
     uint256 internal fee;
-    uint256 public randomResult;
+    uint256 public randomNumber;
 
     constructor()
     
@@ -23,7 +23,7 @@ contract Random is VRFConsumerBase{
     }
 
     function fulfillRandomness(bytes32 requestId, uint256 randomness) internal override {
-        randomResult = randomness;
+        randomNumber = randomness;
     }
     
     // returns a random number based on an oracle
@@ -36,9 +36,4 @@ contract Random is VRFConsumerBase{
     function getRandomNumberWithoutOracle() public view  returns (uint256) {
         return uint256(keccak256(abi.encodePacked( now, msg.sender)));
     }
-
-    function randomNumber() public view returns(uint256) {
-        return randomResult;
-    }
-
 }

@@ -2,30 +2,30 @@ require('dotenv').config()
 const contract = require('../build/contracts/Random.json')
 const Web3 = require('web3')
 
-const { API_URL, CONTRACT_ADDRESS, PUBLIC_KEY } = process.env
+const { API_URL, CONTRACT_ADDRESS } = process.env
 const web3 = new Web3(API_URL)
 
 const randomContract = new web3.eth.Contract(contract.abi, CONTRACT_ADDRESS)
 
 const main = async () => {
-    getBadRandomNumber()
-    //getRandomNumberBySeed(2334242)
-    //getRandomNumber()
+    // getRandomNumberWithoutOracle()
+    // requestRandomNumber()
+    getRandomNumber()
 }
 
-const getBadRandomNumber = async () => {
-    const badRandomNumber = await randomContract.methods.getBadRandomNumber().call()
-    console.log(`Random number with an unsecure implemenation: ${badRandomNumber}`)
+const getRandomNumberWithoutOracle = async () => {
+    const randomNumber = await randomContract.methods.getRandomNumberWithoutOracle().call()
+    console.log(`Random number with an unsecure implemenation: ${randomNumber}`)
 }
 
-const getRandomNumberBySeed = async (providedSeed) => {
-    const randomNumberWithSeed = await randomContract.methods.getRandomNumberBySeed(providedSeed).call()
-    console.log(`Random number with an user provided seed: ${randomNumberWithSeed}`)
+const requestRandomNumber = async () => {
+    await randomContract.methods.getRandomNumber(342343242).call()
 }
 
 const getRandomNumber = async () => {
-    const randomNumber = await randomContract.methods.getRandomNumber().call()
-    console.log(`Random number as a combination of the previous methods: ${randomNumber}`)
+    const randomNumber = await randomContract.methods.randomNumber()
+    console.log(`Random number with chainlink: ${randomNumber}`)
+    
 }
 
 main()
